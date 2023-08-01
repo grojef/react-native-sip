@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-VERSION="v2.9"
-URL="https://nuacom-app.s3.eu-west-1.amazonaws.com/releases/mobile/pjsip/pjsip-${VERSION}.tar.gz"
+VERSION="2.9"
+URL="https://github.com/grojef/react-native-pjsip-builder/releases/download/2.9/pjsip-${VERSION}.tar.gz"
 LOCK=".libs.lock"
 DEST=".libs.tar.gz"
 DOWNLOAD=true
