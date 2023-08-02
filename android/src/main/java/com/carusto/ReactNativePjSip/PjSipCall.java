@@ -111,9 +111,7 @@ public class PjSipCall extends Call {
             Media media = getMedia(i);
             CallMediaInfo mediaInfo = info.getMedia().get(i);
 
-            if (mediaInfo.getType() == pjmedia_type.PJMEDIA_TYPE_AUDIO
-                    && media != null
-                    && mediaInfo.getStatus() == pjsua_call_media_status.PJSUA_CALL_MEDIA_ACTIVE) {
+            if (mediaInfo.getType() == pjmedia_type.PJMEDIA_TYPE_AUDIO && media != null && mediaInfo.getStatus() == pjsua_call_media_status.PJSUA_CALL_MEDIA_ACTIVE) {
                 AudioMedia audioMedia = AudioMedia.typecastFromMedia(media);
 
                 // connect or disconnect the captured audio
@@ -182,9 +180,7 @@ public class PjSipCall extends Call {
             Media media = getMedia(i);
             CallMediaInfo mediaInfo = info.getMedia().get(i);
 
-            if (mediaInfo.getType() == pjmedia_type.PJMEDIA_TYPE_AUDIO
-                    && media != null
-                    && mediaInfo.getStatus() == pjsua_call_media_status.PJSUA_CALL_MEDIA_ACTIVE) {
+            if (mediaInfo.getType() == pjmedia_type.PJMEDIA_TYPE_AUDIO && media != null && mediaInfo.getStatus() == pjsua_call_media_status.PJSUA_CALL_MEDIA_ACTIVE) {
                 AudioMedia audioMedia = AudioMedia.typecastFromMedia(media);
 
                 // connect the call audio media to sound device
@@ -223,8 +219,7 @@ public class PjSipCall extends Call {
             // -----
             int connectDuration = -1;
 
-            if (info.getState() == pjsip_inv_state.PJSIP_INV_STATE_CONFIRMED ||
-                info.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
+            if (info.getState() == pjsip_inv_state.PJSIP_INV_STATE_CONFIRMED || info.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
                 connectDuration = info.getConnectDuration().getSec();
             }
 
@@ -281,7 +276,7 @@ public class PjSipCall extends Call {
             long size = media.size();
             JSONObject json = new JSONObject();
 
-            for (int i=0; i < size; i++) {
+            for (int i = 0; i < size; i++) {
                 CallMediaInfo info = media.get(i);
 
                 JSONObject audioStreamJson = new JSONObject();
@@ -291,9 +286,9 @@ public class PjSipCall extends Call {
                 videoStreamJson.put("captureDevice", info.getVideoCapDev());
                 videoStreamJson.put("windowId", info.getVideoIncomingWindowId());
 
-                json.put("dir", info.getDir().toString());
-                json.put("type", info.getType().toString());
-                json.put("status", info.getStatus().toString());
+                json.put("dir", String.valueOf(info.getDir()));
+                json.put("type", String.valueOf(info.getType()));
+                json.put("status", String.valueOf(info.getStatus()));
                 json.put("audioStream", audioStreamJson);
                 json.put("videoStream", videoStreamJson);
 
