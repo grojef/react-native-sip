@@ -33,7 +33,6 @@ import org.pjsip.pjsua2.AudDevManager;
 import org.pjsip.pjsua2.AuthCredInfo;
 import org.pjsip.pjsua2.CallOpParam;
 import org.pjsip.pjsua2.CallSetting;
-import org.pjsip.pjsua2.CodecInfoVector2;
 import org.pjsip.pjsua2.Endpoint;
 import org.pjsip.pjsua2.EpConfig;
 import org.pjsip.pjsua2.OnCallStateParam;
@@ -45,6 +44,7 @@ import org.pjsip.pjsua2.StringVector;
 import org.pjsip.pjsua2.TransportConfig;
 import org.pjsip.pjsua2.CodecInfoVector;
 import org.pjsip.pjsua2.CodecInfo;
+import org.pjsip.pjsua2.VideoDevInfo;
 import org.pjsip.pjsua2.pj_qos_type;
 import org.pjsip.pjsua2.pjmedia_orient;
 import org.pjsip.pjsua2.pjsip_inv_state;
@@ -294,7 +294,7 @@ public class PjSipService extends Service {
         // this should not be done, and is incorrect
         // this prevents the transport from being used by other accounts
         // that are added in the future. for example, if you add a TLS account
-        // and then remove it. Next time you add a TLS account it will not 
+        // and then remove it. Next time you add a TLS account it will not
         // be able to make calls
 
         // // Remove transport
@@ -420,7 +420,7 @@ public class PjSipService extends Service {
                 }
             }
 
-            CodecInfoVector2 codVect = mEndpoint.codecEnum2();
+            CodecInfoVector codVect = mEndpoint.codecEnum();
             JSONObject codecs = new JSONObject();
 
             for(int i=0;i<codVect.size();i++){
@@ -872,10 +872,10 @@ public class PjSipService extends Service {
 
             // -----
             PjSipCall call = findCall(callId);
-            
+
             // Disables Original RFC 2833 dtmf
             //call.dialDtmf(digits);
-            
+
             // Adds Patch For SIPINFO dtmf
             CallSendRequestParam prm = new CallSendRequestParam();
             prm.setMethod("INFO");
@@ -1011,7 +1011,7 @@ public class PjSipService extends Service {
     void emmitCallChanged(PjSipCall call, OnCallStateParam prm) {
         try {
             final int callId = call.getId();
-            final int callState = call.getInfo().getState();
+            final pjsip_inv_state callState = call.getInfo().getState();
 
             job(new Runnable() {
                 @Override
