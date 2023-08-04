@@ -8,13 +8,13 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.os.Process;
-import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -24,15 +24,15 @@ import com.carusto.ReactNativePjSip.dto.ServiceConfigurationDTO;
 import com.carusto.ReactNativePjSip.dto.SipMessageDTO;
 import com.carusto.ReactNativePjSip.utils.ArgumentUtils;
 
-import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.ReadableMapKeySetIterator;
-
 import org.json.JSONObject;
 import org.pjsip.pjsua2.AccountConfig;
 import org.pjsip.pjsua2.AudDevManager;
 import org.pjsip.pjsua2.AuthCredInfo;
 import org.pjsip.pjsua2.CallOpParam;
+import org.pjsip.pjsua2.CallSendRequestParam;
 import org.pjsip.pjsua2.CallSetting;
+import org.pjsip.pjsua2.CodecInfo;
+import org.pjsip.pjsua2.CodecInfoVector2;
 import org.pjsip.pjsua2.Endpoint;
 import org.pjsip.pjsua2.EpConfig;
 import org.pjsip.pjsua2.OnCallStateParam;
@@ -42,15 +42,11 @@ import org.pjsip.pjsua2.SipHeaderVector;
 import org.pjsip.pjsua2.SipTxOption;
 import org.pjsip.pjsua2.StringVector;
 import org.pjsip.pjsua2.TransportConfig;
-import org.pjsip.pjsua2.CodecInfoVector;
-import org.pjsip.pjsua2.CodecInfo;
-import org.pjsip.pjsua2.VideoDevInfo;
 import org.pjsip.pjsua2.pj_qos_type;
 import org.pjsip.pjsua2.pjmedia_orient;
 import org.pjsip.pjsua2.pjsip_inv_state;
 import org.pjsip.pjsua2.pjsip_status_code;
 import org.pjsip.pjsua2.pjsip_transport_type_e;
-import org.pjsip.pjsua2.CallSendRequestParam;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -420,7 +416,7 @@ public class PjSipService extends Service {
                 }
             }
 
-            CodecInfoVector codVect = mEndpoint.codecEnum();
+            CodecInfoVector2 codVect = mEndpoint.codecEnum2();
             JSONObject codecs = new JSONObject();
 
             for(int i=0;i<codVect.size();i++){
@@ -1011,7 +1007,7 @@ public class PjSipService extends Service {
     void emmitCallChanged(PjSipCall call, OnCallStateParam prm) {
         try {
             final int callId = call.getId();
-            final pjsip_inv_state callState = call.getInfo().getState();
+            final int callState = call.getInfo().getState();
 
             job(new Runnable() {
                 @Override

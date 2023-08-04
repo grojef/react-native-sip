@@ -3,15 +3,30 @@ package com.carusto.ReactNativePjSip;
 import android.content.Context;
 import android.media.AudioManager;
 import android.util.Log;
-import android.view.View;
-
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.pjsip.pjsua2.*;
+import org.pjsip.pjsua2.AudDevManager;
+import org.pjsip.pjsua2.AudioMedia;
+import org.pjsip.pjsua2.Call;
+import org.pjsip.pjsua2.CallInfo;
+import org.pjsip.pjsua2.CallMediaInfo;
+import org.pjsip.pjsua2.CallMediaInfoVector;
+import org.pjsip.pjsua2.CallOpParam;
+import org.pjsip.pjsua2.Media;
+import org.pjsip.pjsua2.OnCallMediaEventParam;
+import org.pjsip.pjsua2.OnCallMediaStateParam;
+import org.pjsip.pjsua2.OnCallStateParam;
+import org.pjsip.pjsua2.SipHeader;
+import org.pjsip.pjsua2.SipHeaderVector;
+import org.pjsip.pjsua2.SipTxOption;
+import org.pjsip.pjsua2.VideoPreview;
+import org.pjsip.pjsua2.VideoWindow;
+import org.pjsip.pjsua2.pjmedia_type;
+import org.pjsip.pjsua2.pjsip_inv_state;
+import org.pjsip.pjsua2.pjsip_status_code;
+import org.pjsip.pjsua2.pjsua_call_media_status;
 
-import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PjSipCall extends Call {
@@ -224,7 +239,7 @@ public class PjSipCall extends Call {
             int connectDuration = -1;
 
             if (info.getState() == pjsip_inv_state.PJSIP_INV_STATE_CONFIRMED ||
-                info.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
+                    info.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
                 connectDuration = info.getConnectDuration().getSec();
             }
 
@@ -281,7 +296,7 @@ public class PjSipCall extends Call {
             long size = media.size();
             JSONObject json = new JSONObject();
 
-            for (int i=0; i < size; i++) {
+            for (int i = 0; i < size; i++) {
                 CallMediaInfo info = media.get(i);
 
                 JSONObject audioStreamJson = new JSONObject();
@@ -291,9 +306,9 @@ public class PjSipCall extends Call {
                 videoStreamJson.put("captureDevice", info.getVideoCapDev());
                 videoStreamJson.put("windowId", info.getVideoIncomingWindowId());
 
-                json.put("dir", info.getDir().toString());
-                json.put("type", info.getType().toString());
-                json.put("status", info.getStatus().toString());
+                json.put("dir", String.valueOf(info.getDir()));
+                json.put("type", String.valueOf(info.getType()));
+                json.put("status", String.valueOf(info.getStatus()));
                 json.put("audioStream", audioStreamJson);
                 json.put("videoStream", videoStreamJson);
 
